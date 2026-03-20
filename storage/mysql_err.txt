@@ -1,0 +1,26 @@
+2026-02-12 10:41:52 0 [Note] Starting MariaDB 10.4.32-MariaDB source revision c4143f909528e3fab0677a28631d10389354c491 as process 9968
+2026-02-12 10:41:52 0 [Note] InnoDB: Mutexes and rw_locks use Windows interlocked functions
+2026-02-12 10:41:52 0 [Note] InnoDB: Uses event mutexes
+2026-02-12 10:41:52 0 [Note] InnoDB: Compressed tables use zlib 1.3
+2026-02-12 10:41:52 0 [Note] InnoDB: Number of pools: 1
+2026-02-12 10:41:52 0 [Note] InnoDB: Using SSE2 crc32 instructions
+2026-02-12 10:41:52 0 [Note] InnoDB: Initializing buffer pool, total size = 128M, instances = 1, chunk size = 128M
+2026-02-12 10:41:52 0 [Note] InnoDB: Completed initialization of buffer pool
+2026-02-12 10:41:52 0 [Note] InnoDB: Resizing redo log from 2*5242880 to 2*50331648 bytes; LSN=45343061
+2026-02-12 10:41:52 0 [Note] InnoDB: Starting to delete and rewrite log files.
+2026-02-12 10:41:52 0 [Note] InnoDB: Setting log file .\ib_logfile101 size to 50331648 bytes
+2026-02-12 10:41:52 0 [Note] InnoDB: Setting log file .\ib_logfile1 size to 50331648 bytes
+2026-02-12 10:41:52 0 [Note] InnoDB: Renaming log file .\ib_logfile101 to .\ib_logfile0
+2026-02-12 10:41:52 0 [Note] InnoDB: New log files created, LSN=45343061
+2026-02-12 10:41:52 0 [Note] InnoDB: 128 out of 128 rollback segments are active.
+2026-02-12 10:41:52 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2026-02-12 10:41:52 0 [Note] InnoDB: Setting file '.\ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2026-02-12 10:41:52 0 [Note] InnoDB: File '.\ibtmp1' size is now 12 MB.
+2026-02-12 10:41:52 0 [Note] InnoDB: Waiting for purge to start
+2026-02-12 10:41:53 0 [Note] InnoDB: 10.4.32 started; log sequence number 45343061; transaction id 21965
+2026-02-12 10:41:53 0 [Note] InnoDB: Loading buffer pool(s) from c:\xampp\mysql\data\ib_buffer_pool
+2026-02-12 10:41:53 0 [Note] Plugin 'FEEDBACK' is disabled.
+2026-02-12 10:41:53 0 [Note] Server socket created on IP: '::'.
+2026-02-12 10:41:53 0 [Note] InnoDB: Buffer pool(s) load completed at 260212 10:41:53
+2026-02-12 10:41:53 0 [ERROR] Fatal error: Can't open and lock privilege tables: Incorrect file format 'host'
+2026-02-12 10:41:53 0 [ERROR] Aborting

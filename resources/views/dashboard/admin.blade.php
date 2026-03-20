@@ -1,0 +1,355 @@
+@extends('layouts.app')
+
+@section('title', 'Dashboard')
+
+@section('content')
+<div class="page-header d-print-none">
+    <div class="container-xl">
+        <div class="row g-2 align-items-center">
+            <div class="col">
+                <div class="page-pretitle">Overview Sistem</div>
+                <h2 class="page-title">
+                    Selamat Datang, {{ auth()->user()->name }}!
+                </h2>
+            </div>
+            <div class="col-auto ms-auto">
+                <div class="btn-list">
+                    <span class="badge bg-red-lt fs-6">
+                        <i class="ti ti-shield-check me-1"></i>
+                        Administrator
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-body">
+    <div class="container-xl">
+        <!-- Welcome Card -->
+        <div class="card bg-dark text-white mb-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <span class="avatar avatar-lg bg-white-lt">
+                            <i class="ti ti-dashboard fs-1"></i>
+                        </span>
+                    </div>
+                    <div class="col">
+                        <h3 class="mb-1 text-white">{{ now()->translatedFormat('l, d F Y') }}</h3>
+                        <div class="text-white-50">
+                            Kelola seluruh data PJLP, absensi, dan sistem informasi RSUD Cipayung.
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <a href="{{ route('pjlp.index') }}" class="btn btn-light">
+                            <i class="ti ti-users me-1"></i> Kelola PJLP
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row row-deck row-cards mb-4">
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-primary text-white avatar">
+                                    <i class="ti ti-users"></i>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">Total PJLP</div>
+                                <div class="text-muted">{{ $pjlpAktif }} aktif</div>
+                            </div>
+                            <div class="col-auto">
+                                <span class="h1 mb-0">{{ $totalPjlp }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-blue text-white avatar">
+                                    <i class="ti ti-shield"></i>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">Security</div>
+                                <div class="text-muted">PJLP Security</div>
+                            </div>
+                            <div class="col-auto">
+                                <span class="h1 mb-0 text-blue">{{ $pjlpSecurity }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-cyan text-white avatar">
+                                    <i class="ti ti-spray"></i>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">Cleaning Service</div>
+                                <div class="text-muted">PJLP CS</div>
+                            </div>
+                            <div class="col-auto">
+                                <span class="h1 mb-0 text-cyan">{{ $pjlpCleaning }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-3">
+                <div class="card card-sm">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-green text-white avatar">
+                                    <i class="ti ti-fingerprint"></i>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="font-weight-medium">Absensi Hari Ini</div>
+                                <div class="text-muted">{{ now()->format('d M Y') }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <span class="h1 mb-0 text-green">{{ $absensiHariIni }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Items -->
+        <div class="row row-deck row-cards mb-4">
+            <div class="col-sm-6">
+                <div class="card card-sm border-warning">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-warning text-white avatar avatar-lg">
+                                    <i class="ti ti-calendar-off fs-2"></i>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="h2 mb-0">{{ $cutiPending }}</div>
+                                <div class="text-muted">Cuti Menunggu Persetujuan</div>
+                            </div>
+                            <div class="col-auto">
+                                <a href="{{ route('cuti.index') }}?status=menunggu" class="btn btn-warning">
+                                    <i class="ti ti-eye me-1"></i> Lihat
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card card-sm border-info">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <span class="bg-info text-white avatar avatar-lg">
+                                    <i class="ti ti-clipboard-list fs-2"></i>
+                                </span>
+                            </div>
+                            <div class="col">
+                                <div class="h2 mb-0">{{ $lembarKerjaPending }}</div>
+                                <div class="text-muted">Lembar Kerja Menunggu Validasi</div>
+                            </div>
+                            <div class="col-auto">
+                                <a href="{{ route('lembar-kerja.index') }}?status=submitted" class="btn btn-info">
+                                    <i class="ti ti-eye me-1"></i> Lihat
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="ti ti-bolt me-2 text-yellow"></i>
+                    Aksi Cepat
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-6 col-md-2">
+                        <a href="{{ route('pjlp.create') }}" class="card card-link card-link-pop text-center p-3">
+                            <span class="avatar avatar-lg bg-primary-lt mb-2 mx-auto">
+                                <i class="ti ti-user-plus fs-2"></i>
+                            </span>
+                            <div class="fw-medium">Tambah PJLP</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-2">
+                        <a href="{{ route('users.create') }}" class="card card-link card-link-pop text-center p-3">
+                            <span class="avatar avatar-lg bg-blue-lt mb-2 mx-auto">
+                                <i class="ti ti-user-cog fs-2"></i>
+                            </span>
+                            <div class="fw-medium">Tambah User</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-2">
+                        <a href="{{ route('absensi.import') }}" class="card card-link card-link-pop text-center p-3">
+                            <span class="avatar avatar-lg bg-green-lt mb-2 mx-auto">
+                                <i class="ti ti-upload fs-2"></i>
+                            </span>
+                            <div class="fw-medium">Import Absensi</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-2">
+                        <a href="{{ route('pjlp.index') }}" class="card card-link card-link-pop text-center p-3">
+                            <span class="avatar avatar-lg bg-purple-lt mb-2 mx-auto">
+                                <i class="ti ti-users fs-2"></i>
+                            </span>
+                            <div class="fw-medium">Data PJLP</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-2">
+                        <a href="{{ route('absensi.index') }}" class="card card-link card-link-pop text-center p-3">
+                            <span class="avatar avatar-lg bg-orange-lt mb-2 mx-auto">
+                                <i class="ti ti-calendar-stats fs-2"></i>
+                            </span>
+                            <div class="fw-medium">Data Absensi</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-2">
+                        <a href="{{ route('cuti.index') }}" class="card card-link card-link-pop text-center p-3">
+                            <span class="avatar avatar-lg bg-pink-lt mb-2 mx-auto">
+                                <i class="ti ti-plane fs-2"></i>
+                            </span>
+                            <div class="fw-medium">Data Cuti</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row row-deck row-cards">
+            <!-- Recent Cuti Requests -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="ti ti-calendar-off me-2 text-warning"></i>
+                            Pengajuan Cuti Terbaru
+                        </h3>
+                        <div class="card-actions">
+                            <a href="{{ route('cuti.index') }}" class="btn btn-sm btn-outline-primary">
+                                Lihat Semua <i class="ti ti-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body card-body-scrollable card-body-scrollable-shadow" style="max-height: 350px;">
+                        <div class="divide-y">
+                            @forelse($recentCuti as $cuti)
+                            <div class="row py-2">
+                                <div class="col-auto">
+                                    <span class="avatar bg-{{ $cuti->status->color() }}-lt">
+                                        {{ strtoupper(substr($cuti->pjlp->nama, 0, 2)) }}
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    <div class="text-truncate fw-medium">
+                                        {{ $cuti->pjlp->nama }}
+                                        <span class="badge bg-secondary-lt ms-1">{{ $cuti->pjlp->unit->label() }}</span>
+                                    </div>
+                                    <div class="text-muted small">
+                                        {{ $cuti->jenisCuti->nama }} &bull;
+                                        {{ $cuti->tgl_mulai->format('d/m') }} - {{ $cuti->tgl_selesai->format('d/m/Y') }}
+                                    </div>
+                                </div>
+                                <div class="col-auto align-self-center">
+                                    <span class="badge bg-{{ $cuti->status->color() }}-lt">
+                                        {{ $cuti->status->label() }}
+                                    </span>
+                                </div>
+                            </div>
+                            @empty
+                            <div class="empty py-4">
+                                <div class="empty-icon">
+                                    <i class="ti ti-mood-smile"></i>
+                                </div>
+                                <p class="empty-title">Tidak ada pengajuan cuti</p>
+                            </div>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Lembar Kerja -->
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="ti ti-clipboard-list me-2 text-info"></i>
+                            Lembar Kerja Terbaru
+                        </h3>
+                        <div class="card-actions">
+                            <a href="{{ route('lembar-kerja.index') }}" class="btn btn-sm btn-outline-info">
+                                Lihat Semua <i class="ti ti-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body card-body-scrollable card-body-scrollable-shadow" style="max-height: 350px;">
+                        <div class="divide-y">
+                            @forelse($recentLembarKerja as $lk)
+                            <div class="row py-2">
+                                <div class="col-auto">
+                                    <span class="avatar bg-info-lt">
+                                        <i class="ti ti-file-description"></i>
+                                    </span>
+                                </div>
+                                <div class="col">
+                                    <div class="text-truncate fw-medium">
+                                        {{ $lk->pjlp->nama ?? '-' }}
+                                    </div>
+                                    <div class="text-muted small">
+                                        {{ $lk->tanggal?->format('d/m/Y') ?? '-' }}
+                                    </div>
+                                </div>
+                                <div class="col-auto align-self-center text-end">
+                                    <span class="badge bg-{{ $lk->status->color() }}-lt">
+                                        {{ $lk->status->label() }}
+                                    </span>
+                                </div>
+                            </div>
+                            @empty
+                            <div class="empty py-4">
+                                <div class="empty-icon">
+                                    <i class="ti ti-mood-smile"></i>
+                                </div>
+                                <p class="empty-title">Tidak ada lembar kerja</p>
+                            </div>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
