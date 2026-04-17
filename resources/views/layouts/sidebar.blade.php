@@ -401,6 +401,19 @@
                         </span>
                     </a>
                 </li>
+                {{-- Laporan Parkir --}}
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('laporan-parkir.*') ? 'active' : '' }}"
+                       href="{{ $showSecurity ? route('laporan-parkir.rekap') : route('laporan-parkir.index') }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <i class="ti ti-parking"></i>
+                        </span>
+                        <span class="nav-link-title">
+                            {{ $showSecurity ? 'Rekap Parkir Menginap' : 'Laporan Parkir' }}
+                        </span>
+                    </a>
+                </li>
+
                 @if($isSecurityPjlp)
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('gerakan-jumat-sehat.*') ? 'active' : '' }}" href="{{ route('gerakan-jumat-sehat.index') }}">

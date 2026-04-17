@@ -13,6 +13,7 @@ use App\Http\Controllers\InspeksiHydrantIndoorController;
 use App\Http\Controllers\PengawasanProyekController;
 use App\Http\Controllers\PengecekanAparController;
 use App\Http\Controllers\LaporanKecelakaanController;
+use App\Http\Controllers\LaporanParkirController;
 use App\Http\Controllers\GerakanJumatSehatController;
 use App\Http\Controllers\LogbookLimbahController;
 use App\Http\Controllers\CutiController;
@@ -191,6 +192,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/rekap', [GerakanJumatSehatController::class, 'rekap'])->name('rekap');
     });
 
+    // Laporan Parkir Menginap
+    Route::prefix('laporan-parkir')->name('laporan-parkir.')->group(function () {
+        Route::get('/', [LaporanParkirController::class, 'index'])->name('index');
+        Route::post('/', [LaporanParkirController::class, 'store'])->name('store');
+        Route::get('/rekap', [LaporanParkirController::class, 'rekap'])->name('rekap');
+    });
+
     // Laporan Kecelakaan Kerja, Insiden & Ketidaksesuaian (K3)
     Route::prefix('laporan-kecelakaan')->name('laporan-kecelakaan.')->group(function () {
         Route::get('/', [LaporanKecelakaanController::class, 'index'])->name('index');
@@ -272,6 +280,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/inspeksi-hydrant-indoor',[ExportController::class, 'inspeksiHydrantIndoor'])->name('inspeksi-hydrant-indoor');
         Route::get('/pengecekan-apar',       [ExportController::class, 'pengecekanApar'])->name('pengecekan-apar');
         Route::get('/pengawasan-proyek',     [ExportController::class, 'pengawasanProyek'])->name('pengawasan-proyek');
+        Route::get('/laporan-parkir',        [ExportController::class, 'laporanParkir'])->name('laporan-parkir');
     });
 
     // Laporan

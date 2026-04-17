@@ -13,6 +13,7 @@ use App\Models\LogbookLimbah;
 use App\Models\MasterAreaCs;
 use App\Models\PatrolInspeksi;
 use App\Models\PengecekanApar;
+use App\Models\LaporanParkir;
 use App\Models\PengawasanProyek;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -351,6 +352,36 @@ class ExportController extends Controller
 
         return $this->respond($request, $title, [
             'Tanggal', 'Petugas', 'Shift', 'Nama Proyek', 'Lokasi',
+        ], $rows, $request->get('format', 'xlsx'));
+    }
+
+    // ── Security: Laporan Parkir ─────────────────────────────────
+
+    public function laporanParkir(Request $request)
+    {
+        [$bulan, $tahun] = $this->bulanTahun($request);
+        $title = 'Rekap Laporan Parkir Menginap - ' . $this->bulanLabel($bulan, $tahun);
+
+        $data = LaporanParkir::with(['pjlp', 'shift'])
+            ->byBulan($bulan, $tahun)
+            ->orderBy('tanggal')
+            ->get()
+            ->groupBy(fn($r) => $r->tanggal->format('Y-m-d'));
+
+        $rows = [];
+        foreach ($data as $tanggal => $group) {
+            $rows[] = [
+                Carbon::parse($tanggal)->format('d/m/Y'),
+                $group->where('jenis', 'roda_4')->sum('jumlah_kendaraan'),
+                $group->where('jenis', 'roda_2')->sum('jumlah_kendaraan'),
+                $group->where('jenis', 'roda_4')->sum('jumlah_kendaraan') +
+                $group->where('jenis', 'roda_2')->sum('jumlah_kendaraan'),
+                $group->pluck('pjlp.nama')->unique()->filter()->implode(', '),
+            ];
+        }
+
+        return $this->respond($request, $title, [
+            'Tanggal', 'Roda 4', 'Roda 2', 'Total', 'Petugas',
         ], $rows, $request->get('format', 'xlsx'));
     }
 }
